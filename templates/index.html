@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+
+<table class="table table-hover">
+    <thead>
+        <th class="active">No</th>
+        <th class="active">电影名称</th>
+        <th class="active">是否已经播放</th>
+        <th class="active">开播时间</th>
+        <th class='active'>操作</th>
+{#        <th class='active'>标志</th>#}
+    </thead>
+    <tr>
+        {% for todo in todolists %}
+            {% if current_user.is_authenticated %}
+                <!-- tr -->
+                {% if todo.status %}
+                    <tr class="success">
+                {% else %}
+                    <tr class="info">
+                {% endif %}
+                <td>{{ loop.index }}</td>
+                <td>{{ todo.title }}</td>
+                 <td>{{ todo.status }}</td>
+                <td>{{ todo.time }}</td>
+                <td>
+                {% if todo.status %}
+                    <a href="{{ url_for('delete_todo_list', id=todo.id) }}" class="btn btn-danger" role ="button">删除</a>
+                {% else %}
+                    <a href="{{ url_for('change_todo_list', id=todo.id) }}" class="btn btn-success" role ="button">修改</a>
+                {% endif %}
+                </td>
+                </tr>
+            {% else %}
+            <!-- tr -->
+                {% if todo.status %}
+                    <tr class="success">
+                {% else %}
+                    <tr class="info">
+                {% endif %}
+                {% if todo.status == 0 %}
+                     <td>{{ loop.index }}</td>
+                     <td>{{ todo.title }}</td>
+                     <td>热播中</td>
+                     <td>{{ todo.time }}</td>
+                    <td>
+                    <a href="{{ url_for('change_todo_list', id=todo.id) }}" class="btn btn-success" role ="button">购票</a>
+                    </td>
+                {% endif %}
+            </tr>
+            {% endif %}
+        {% endfor %}
+
+    </tbody>
+</table>
+
+    {%if current_user.is_authenticated %}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> ADD </button>
+{% endif %}
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog"> <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel" align="center">add new todo list</h4>
+      </div>
+
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-md-8 col-md-offset-2"> {{ wtf.quick_form(form, form_type="horizontal") }} </div>
+          </div>
+      </div> <!-- modal body -->
+
+    </div> </div>
+</div>
+
+
+{% endblock %}
