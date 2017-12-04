@@ -1,4 +1,4 @@
-完整的目录在[这里]()。
+完整的目录在[这里](https://github.com/DefinitionBeyond/CinemaTicketSys)。
 
 
 # 使用说明
